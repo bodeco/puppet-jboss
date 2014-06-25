@@ -2,7 +2,7 @@
 class jboss (
   $version            = '6.2.0',
   $url                = 'puppet:///modules/jboss',
-  $target             = 'C:/',
+  $target             = 'C:/jboss',
   $java_xms           = '1536m',
   $java_xmx           = '1536m',
   $java_max_perm_size = '256m',
