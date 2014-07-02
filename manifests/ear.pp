@@ -1,3 +1,4 @@
+# JBoss ear files
 define jboss::ear (
   $source,
 ) {

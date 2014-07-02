@@ -1,3 +1,4 @@
+# JBoss installation
 class jboss::install {
   $url = $jboss::url
   $version = $jboss::version
@@ -48,40 +49,40 @@ class jboss::install {
   # see: http://www.mastertheboss.com/jboss-eap/installing-jboss-eap-6-as-a-service
   $sbin_path = "${folder}/modules/native/sbin"
 
+  File {
+    owner => 'S-1-5-32-544', # Adminstrators
+    group => 'S-1-5-18',     # SYSTEM
+  }
+
   file { [
     "${folder}/modules/native",
     "${folder}/modules/native/sbin",
   ]:
-    ensure => directory,
+    ensure  => directory,
     require => Exec['extract_jboss'],
   }
 
   file { "${sbin_path}/prunsrv.exe":
-    source             => 'puppet:///modules/jboss/prunsrv.exe',
-    mode               => '755',
-    source_permissions => ignore,
-    before             => Exec['install_service'],
+    source => 'puppet:///modules/jboss/prunsrv.exe',
+    mode   => '0755',
+    before => Exec['install_service'],
   }
 
   file { "${sbin_path}/commons-daemons-1.0.15.jar":
-    source             => 'puppet:///modules/jboss/commons-daemon-1.0.15.jar',
-    source_permissions => ignore,
-    before             => Exec['install_service'],
+    source => 'puppet:///modules/jboss/commons-daemon-1.0.15.jar',
+    before => Exec['install_service'],
   }
 
   file { "${sbin_path}/service.bat":
-    source             => 'puppet:///modules/jboss/service.bat',
-    mode               => '755',
-    source_permissions => ignore,
-    before             => Exec['install_service'],
+    source  => 'puppet:///modules/jboss/service.bat',
+    mode    => '0755',
+    before  => Exec['install_service'],
   }
 
   file { "${sbin_path}/service.conf.bat":
-    #source             => 'puppet:///modules/jboss/service.conf.bat',
     content => template('jboss/service.conf.bat.erb'),
-    mode               => '755',
-    source_permissions => ignore,
-    before             => Exec['install_service'],
+    mode    => '0755',
+    before  => Exec['install_service'],
   }
 
   exec { 'install_service':

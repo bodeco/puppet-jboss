@@ -1,3 +1,4 @@
+# JBOss configuration
 class jboss::config {
   $folder = $jboss::path
   $java_xms = $jboss::java_xms

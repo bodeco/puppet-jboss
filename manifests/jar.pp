@@ -1,3 +1,4 @@
+# JBoss jar files
 define jboss::jar (
   $source,
 ) {

@@ -1,4 +1,4 @@
-# module: jboss for Windows:
+# module: JBoss for Windows:
 class jboss (
   $version            = '6.2.0',
   $url                = 'puppet:///modules/jboss',

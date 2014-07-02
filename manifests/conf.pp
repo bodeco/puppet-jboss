@@ -1,3 +1,4 @@
+# JBoss configuration files
 define jboss::conf (
   $source  = undef,
   $content = undef,
