@@ -22,10 +22,6 @@ class jboss::install {
   $file = "jboss-eap-${version}.zip"
   $source = "${url}/${file}"
 
-  file { $target:
-    ensure => 'directory',
-  }
-
   staging::file { $file:
     source => $source,
   }
@@ -52,6 +48,10 @@ class jboss::install {
   File {
     owner => 'S-1-5-32-544', # Adminstrators
     group => 'S-1-5-18',     # SYSTEM
+  }
+
+  file { $target:
+    ensure => 'directory',
   }
 
   file { [
@@ -87,8 +87,10 @@ class jboss::install {
 
   exec { 'install_service':
     command     => "${sbin_path}/service.bat install",
+    environment => 'JAVA_HOME=C:/Program Files/Java/jdk1.7.0_60',
     refreshonly => true,
     logoutput   => true,
+    require     => Package['java.jdk'],
     subscribe   => File["${sbin_path}/service.bat", "${sbin_path}/service.conf.bat"]
   }
 }

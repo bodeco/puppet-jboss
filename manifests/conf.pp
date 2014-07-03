@@ -5,8 +5,9 @@ define jboss::conf (
 ) {
 
   file { "${jboss::path}/${name}":
-    source  => $source,
-    content => $content,
-    notify  => Class['jboss::service'],
+    source             => $source,
+    content            => $content,
+    source_permissions => ignore,
+    notify             => Class['jboss::service'],
   }
 }
