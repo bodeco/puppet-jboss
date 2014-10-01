@@ -31,7 +31,7 @@ class jboss::install {
   $folder = "${target}/jboss-eap-${major_ver}.${minor_ver}"
 
   exec { 'extract_jboss':
-    command   => "\"C:/Program Files (x86)/7-zip/7z.exe\" x ${filepath}",
+    command   => "\"C:/Program Files/7-zip/7z.exe\" x ${filepath}",
     cwd       => $target,
     logoutput => true,
     creates   => $folder,
