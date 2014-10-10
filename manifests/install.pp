@@ -9,7 +9,7 @@ class jboss::install {
   $minor_ver = $parse_ver[1]
   $micro_ver = $parse_ver[2]
 
-  include 'archive'
+  include 'archive::staging'
 
   package { 'java.jdk':
     ensure   => present,
@@ -30,7 +30,7 @@ class jboss::install {
   }
 
   archive { $file:
-    path         => $staging_folder,
+    path         => "${staging_folder}/${file}",
     source       => $source,
     extract      => true,
     extract_path => $target,
