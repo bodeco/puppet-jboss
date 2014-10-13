@@ -1,5 +1,5 @@
 # JBoss installation
-class jboss::install {
+class jboss::install inherits jboss::params {
   $url = $jboss::url
   $version = $jboss::version
   $target = $jboss::target
@@ -11,22 +11,31 @@ class jboss::install {
 
   include 'archive::staging'
 
-  package { 'java.jdk':
-    ensure   => present,
-    provider => chocolatey,
+  case $::osfamily {
+    'RedHat': {
+      require 'java'
+    }
+    'Windows': {
+      package { 'java.jdk':
+        ensure   => present,
+        provider => chocolatey,
+      }
+      include 'jboss::install::windows'
+      Class['jboss::install'] -> Class['jboss::install::windows'] -> Class['jboss::config']
+    }
   }
 
   $file = "jboss-eap-${version}.zip"
   $source = "${url}/${file}"
 
-  $staging_folder = regsubst($::staging_windir, '\\', '/', 'G')
+  $staging_folder = $jboss::params::staging_folder
   $folder = "${target}/jboss-eap-${major_ver}.${minor_ver}"
 
   file { $target:
-    ensure => 'directory',
-    owner  => 'S-1-5-32-544', # Adminstrators
-    group  => 'S-1-5-18',     # SYSTEM
-    mode   => '0644',
+    ensure => directory,
+    owner  => $jboss::params::owner,
+    group  => $jboss::params::group,
+    mode   => '0755',
   }
 
   archive { $file:
