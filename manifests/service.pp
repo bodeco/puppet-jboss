@@ -1,67 +1,7 @@
 # class: JBoss service
-class jboss::service {
-  $version = $jboss::version
-  $target = $jboss::target
-
-  $parse_ver = split($version, '[.]')
-  $major_ver = $parse_ver[0]
-  $minor_ver = $parse_ver[1]
-  $micro_ver = $parse_ver[2]
-
-
-  # see: http://www.mastertheboss.com/jboss-eap/installing-jboss-eap-6-as-a-service
-  $folder = "${target}/jboss-eap-${major_ver}.${minor_ver}"
-  $native_path = "${folder}/modules/native"
-  $sbin_path = "${native_path}/sbin"
-
-  File {
-    owner => 'S-1-5-32-544', # Adminstrators
-    group => 'S-1-5-18',     # SYSTEM
-    mode  => '0644',
-  }
-
-  file { [
-    $native_path,
-    $sbin_path,
-  ]:
-    ensure  => directory,
-  }
-
-  file { "${sbin_path}/prunsrv.exe":
-    source => 'puppet:///modules/jboss/prunsrv.exe',
-    mode   => '0755',
-  }
-
-  file { "${sbin_path}/commons-daemons-1.0.15.jar":
-    source => 'puppet:///modules/jboss/commons-daemon-1.0.15.jar',
-  }
-
-  file { "${sbin_path}/service.bat":
-    source => 'puppet:///modules/jboss/service.bat',
-    mode   => '0755',
-  }
-
-  file { "${sbin_path}/service.conf.bat":
-    content => template('jboss/service.conf.bat.erb'),
-    mode    => '0755',
-  }
-
-  exec { 'install_service':
-    command     => "${sbin_path}/service.bat install",
-    environment => 'JAVA_HOME=C:/Program Files/Java/jdk1.7.0_60',
-    refreshonly => true,
-    logoutput   => true,
-    subscribe   => File[
-      "${sbin_path}/prunsrv.exe",
-      "${sbin_path}/commons-daemons-1.0.15.jar",
-      "${sbin_path}/service.bat",
-      "${sbin_path}/service.conf.bat"
-    ],
-  }
-
-  service { 'JBOSS_EAP_SERVICE':
-    ensure  => running,
-    enable  => true,
-    require => Exec['install_service'],
+class jboss::service inherits jboss::params {
+  service { $jboss::params::service_name:
+    ensure => running,
+    enable => true,
   }
 }
