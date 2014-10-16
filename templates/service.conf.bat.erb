@@ -35,7 +35,7 @@ rem #
 rem # JVM memory allocation pool parameters - modify as appropriate.
 set "JVM_MS=-<%= @java_xms %>"
 set "JVM_MX=-<%= @java_xmx %>"
-set "JAVA_OPTS=-XX:MaxPermSize=<%= @java_max_perm_size %>"
+set "JAVA_OPTS=-XX:MaxPermSize=<%= @java_max_perm_size %> <%= @java_options %>"
 
 rem # Prefer IPv4
 set "JAVA_OPTS=%JAVA_OPTS%;-Djava.net.preferIPv4Stack=true"

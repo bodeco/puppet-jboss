@@ -9,6 +9,7 @@ class jboss::install::windows {
   $java_xms = $jboss::java_xms
   $java_xmx = $jboss::java_xmx
   $java_max_perm_size = $jboss::java_max_perm_size
+  $java_options = $jboss::java_options
 
   # see: http://www.mastertheboss.com/jboss-eap/installing-jboss-eap-6-as-a-service
   $folder = "${target}/jboss-eap-${major_ver}.${minor_ver}"
